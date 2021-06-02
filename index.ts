@@ -39,20 +39,38 @@ app.get('/healthz', async (req: Request, res: Response) => {
 
 app.post('/expenses', async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
+
     const connection = await pool.promise().getConnection();
     const price = req.body.price; // TODO: price type check that number
     await connection.query(`INSERT INTO expenses (description, price) VALUES ('${req.body.description}', ${price})`);
     connection.release();
     res.send()
-  } catch (e) {
-    console.log('cant reach to expenses db')
-    console.log(e);
+  } catch (err) {
+    console.log('cant insert to expenses db')
+    console.log(err);
     res.status(500).send();
   }
   console.log(req.body);
   res.status(200).send();
 });
+
+
+app.delete('/expenses/:expenseId', async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const connection = await pool.promise().getConnection();
+    await connection.query(`DELETE FROM expenses WHERE id='${req.params.expenseId}'`);
+    connection.release();
+    res.send()
+  } catch (err) {
+    console.log('cant delete from expenses db')
+    console.log(err);
+    res.status(500).send();
+  }
+  res.send(200).send();
+})
 
 app.listen(PORT, () => {
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
