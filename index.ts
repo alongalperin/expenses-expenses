@@ -20,7 +20,7 @@ app.use(express.json())
 
 app.use(cors());
 
-const PORT = 8001;
+const PORT = process.env.PORT || 8001;
 
 app.get('/expenses', async (req: Request, res: Response) => {
   console.log('request for expenses');
