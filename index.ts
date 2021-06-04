@@ -43,7 +43,7 @@ app.post('/expenses', async (req, res) => {
 
     const connection = await pool.promise().getConnection();
     const price = req.body.price; // TODO: price type check that number
-    await connection.query(`INSERT INTO expenses (description, price) VALUES ('${req.body.description}', ${price})`);
+    await connection.query(`INSERT INTO expenses (description, price, categoryId) VALUES ('${req.body.description}', ${price}, ${req.body.categoryId})`);
     connection.release();
     res.send()
   } catch (err) {
